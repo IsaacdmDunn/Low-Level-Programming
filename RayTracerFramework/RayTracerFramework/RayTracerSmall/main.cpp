@@ -173,7 +173,7 @@ Vec3f trace(
 		float fresneleffect = mix(pow(1 - facingratio, 3), 1, 0.1);
 		// compute reflection direction (not need to normalize because all vectors
 		// are already normalized)
-		Vec3f refldir = raydir - nhit + nhit * raydir.dot(nhit); //* changed to + - isaac
+		Vec3f refldir = raydir - nhit * 2 * raydir.dot(nhit); 
 		refldir.normalize();
 		Vec3f reflection = trace(phit + nhit * bias, refldir, spheres, depth + 1);
 		Vec3f refraction = 0;
