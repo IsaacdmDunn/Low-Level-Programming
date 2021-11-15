@@ -13,6 +13,6 @@ void* memoryManager::operator new(size_t size)
 
 void memoryManager::operator delete(void* p, size_t size)
 {
-    cerr << "deallocating at " << ptr << endl;
-    free(ptr);
+    std::cerr << "deallocating at " << p << std::endl;
+    free(p);
 }

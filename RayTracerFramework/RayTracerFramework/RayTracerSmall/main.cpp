@@ -32,7 +32,8 @@
 #include <sstream>
 #include <string.h>
 #include <iomanip>
-#include <nlohmann/json.hpp>
+//#include "memoryManager.h"
+//#include <nlohmann/json.hpp>
 #include <chrono>
 
 #if defined __linux__ || defined __APPLE__
@@ -145,7 +146,7 @@ Vec3f trace(
 	float tnear = INFINITY;
 	const Sphere* sphere = NULL;
 	// find intersection of this ray with the sphere in the scene
-	for (unsigned i = spheres.size(); --i;) {//for loop optimisation - isaac
+	for (unsigned i = spheres.size(); --i;) {//for loop optimisation - optimised
 		float t0 = INFINITY, t1 = INFINITY;
 		if (spheres[i].intersect(rayorig, raydir, t0, t1)) {
 			if (t0 < 0) t0 = t1;
@@ -194,13 +195,13 @@ Vec3f trace(
 	}
 	else {
 		// it's a diffuse object, no need to raytrace any further
-		for (unsigned i = spheres.size(); --i;) {//for loop optimisation - isaac
+		for (unsigned i = spheres.size(); --i;) {//for loop optimisation - optimised
 			if (spheres[i].emissionColor.x > 0) {
 				// this is a light
 				Vec3f transmission = 1;
 				Vec3f lightDirection = spheres[i].center - phit;
 				lightDirection.normalize();
-				for (unsigned j = spheres.size(); --j;) {//for loop optimisation - isaac
+				for (unsigned j = spheres.size(); --j;) {//for loop optimisation - optimised
 					if (i != j) {
 						float t0, t1;
 						if (spheres[j].intersect(phit + nhit * bias, lightDirection, t0, t1)) {
@@ -237,7 +238,7 @@ void render(const std::vector<Sphere> &spheres, int iteration)
 	unsigned fov = 30, aspectratio = width / height; //changed fov and width/height from float to int
 	float angle = tan(M_PI * 0.5 * fov / 180.);
 	// Trace rays
-	for (unsigned y = 0; y < height; ++y) { //for loop optimisation - isaac
+	for (unsigned y = 0; y < height; ++y) { //for loop optimisation - optimised
 		for (unsigned x = 0; x < width; ++x, ++pixel) {
 			float xx = (2 * ((x + 0.5) * invWidth) - 1) * angle * aspectratio;
 			float yy = (1 - 2 * ((y + 0.5) * invHeight)) * angle;
@@ -248,7 +249,7 @@ void render(const std::vector<Sphere> &spheres, int iteration)
 	}
 	// Save result to a PPM image (keep these flags if you compile under Windows)
 	// 
-	//removed as its unnessary to have a string stream here - isaac
+	//removed as its unnessary to have a string stream here - optimised
 	//std::stringstream ss;
 	//ss << "./spheres" << iteration << ".ppm";
 	//std::string tempString = ss.c_str();
@@ -257,7 +258,7 @@ void render(const std::vector<Sphere> &spheres, int iteration)
 
 	std::ofstream ofs(filename, std::ios::out | std::ios::binary);
 	ofs << "P6\n" << width << " " << height << "\n255\n";
-	for (unsigned i = width * height; --i;) { //for loop optimisation - isaac
+	for (unsigned i = width * height; --i;) { //for loop optimisation - optimised
 		ofs << (unsigned char)(std::min(float(1), image[i].x) * 255) <<
 			(unsigned char)(std::min(float(1), image[i].y) * 255) <<
 			(unsigned char)(std::min(float(1), image[i].z) * 255);
@@ -286,9 +287,9 @@ void SimpleShrinking()
 	std::vector<Sphere> spheres;
 	// Vector structure for Sphere (position, radius, surface color, reflectivity, transparency, emission color)
 
-	for (unsigned i = 4; i--;) //changed int to unsigned - isaac //for loop optimisation - isaac
+	for (unsigned i = 4; i--;) //changed int to unsigned - optimised //for loop optimisation - optimised
 	{
-		//if to switch case - isaac
+		//if to switch case - optimised
 		switch (i)
 		{
 		case 0:
@@ -355,7 +356,7 @@ void SmoothScaling()
 	std::vector<Sphere> spheres;
 	// Vector structure for Sphere (position, radius, surface color, reflectivity, transparency, emission color)
 
-	for (unsigned r = 100; r--;) // float to unsigned - isaac //for loop optimisation - isaac
+	for (unsigned r = 100; r--;) // float to unsigned - optimised //for loop optimisation - optimised
 	{
 		spheres.push_back(Sphere(Vec3f(0.0, -10004, -20), 10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));
 		spheres.push_back(Sphere(Vec3f(0.0, 0, -20), r / 100, Vec3f(1.00, 0.32, 0.36), 1, 0.5)); // Radius++ change here
@@ -387,3 +388,20 @@ int main(int argc, char **argv)
 	return 0;
 }
 
+//overwrites new operator with malloc
+void* ::operator new(size_t size)
+{
+	std::cerr << "allocating " << size << " bytes\n";
+	void* mem = malloc(size);
+	if (mem)
+		return mem;
+	else
+		throw std::bad_alloc();
+}
+
+//overwrites delete operator with free
+void ::operator delete(void* p, size_t size)
+{
+	std::cerr << "deallocating " << size << "bytes at " << p << std::endl;
+	free(p);
+}

@@ -1,11 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project>
-  <ProjectOutputs>
-    <ProjectOutput>
-      <FullPath>C:\Users\d012751j\Documents\GitHub\Low-Level-Programming\RayTracerFramework (1)\RayTracerFramework\x64\Release\RayTracerSmall.exe</FullPath>
-    </ProjectOutput>
-  </ProjectOutputs>
-  <ContentFiles />
-  <SatelliteDlls />
-  <NonRecipeFileRefs />
+  <ProjectOutputs>C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework (1)\RayTracerFramework\x64\Release\RayTracerSmall.exe</ProjectOutputs>
+  <ContentFiles></ContentFiles>
+  <SatelliteDlls></SatelliteDlls>
+  <NonRecipeFileRefs></NonRecipeFileRefs>
 </Project>
