@@ -33,8 +33,9 @@
 #include <string.h>
 #include <iomanip>
 //#include "memoryManager.h"
-//#include <nlohmann/json.hpp>
+#include "json.hpp"
 #include <chrono>
+#include <thread>
 
 #if defined __linux__ || defined __APPLE__
 // "Compiled for Linux
@@ -61,17 +62,17 @@ public:
 		}
 		return *this;
 	}
-	Vec3<T> operator * (const T &f) const { return Vec3<T>(x * f, y * f, z * f); }
-	Vec3<T> operator * (const Vec3<T> &v) const { return Vec3<T>(x * v.x, y * v.y, z * v.z); }
-	T dot(const Vec3<T> &v) const { return x * v.x + y * v.y + z * v.z; }
-	Vec3<T> operator - (const Vec3<T> &v) const { return Vec3<T>(x - v.x, y - v.y, z - v.z); }
-	Vec3<T> operator + (const Vec3<T> &v) const { return Vec3<T>(x + v.x, y + v.y, z + v.z); }
-	Vec3<T>& operator += (const Vec3<T> &v) { x += v.x, y += v.y, z += v.z; return *this; }
-	Vec3<T>& operator *= (const Vec3<T> &v) { x *= v.x, y *= v.y, z *= v.z; return *this; }
+	Vec3<T> operator * (const T& f) const { return Vec3<T>(x * f, y * f, z * f); }
+	Vec3<T> operator * (const Vec3<T>& v) const { return Vec3<T>(x * v.x, y * v.y, z * v.z); }
+	T dot(const Vec3<T>& v) const { return x * v.x + y * v.y + z * v.z; }
+	Vec3<T> operator - (const Vec3<T>& v) const { return Vec3<T>(x - v.x, y - v.y, z - v.z); }
+	Vec3<T> operator + (const Vec3<T>& v) const { return Vec3<T>(x + v.x, y + v.y, z + v.z); }
+	Vec3<T>& operator += (const Vec3<T>& v) { x += v.x, y += v.y, z += v.z; return *this; }
+	Vec3<T>& operator *= (const Vec3<T>& v) { x *= v.x, y *= v.y, z *= v.z; return *this; }
 	Vec3<T> operator - () const { return Vec3<T>(-x, -y, -z); }
 	T length2() const { return x * x + y * y + z * z; }
 	T length() const { return sqrt(length2()); }
-	friend std::ostream & operator << (std::ostream &os, const Vec3<T> &v)
+	friend std::ostream& operator << (std::ostream& os, const Vec3<T>& v)
 	{
 		os << "[" << v.x << " " << v.y << " " << v.z << "]";
 		return os;
@@ -88,20 +89,20 @@ public:
 	Vec3f surfaceColor, emissionColor;      /// surface color and emission (light)
 	float transparency, reflection;         /// surface transparency and reflectivity
 	Sphere(
-		const Vec3f &c,
-		const float &r,
-		const Vec3f &sc,
-		const float &refl = 0,
-		const float &transp = 0,
-		const Vec3f &ec = 0) :
-		center(c), radius(r), radius2(r * r), surfaceColor(sc), emissionColor(ec),
+		const Vec3f& c,
+		const float& r,
+		const Vec3f& sc,
+		const float& refl = 0,
+		const float& transp = 0,
+		const Vec3f& ec = 0) :
+		center(c), radius(r), radius2(r* r), surfaceColor(sc), emissionColor(ec),
 		transparency(transp), reflection(refl)
 	{ /* empty */
 	}
 	//[comment]
 	// Compute a ray-sphere intersection using the geometric solution
 	//[/comment]
-	bool intersect(const Vec3f &rayorig, const Vec3f &raydir, float &t0, float &t1) const
+	bool intersect(const Vec3f& rayorig, const Vec3f& raydir, float& t0, float& t1) const
 	{
 		Vec3f l = center - rayorig;
 		float tca = l.dot(raydir);
@@ -121,7 +122,7 @@ public:
 //[/comment]
 #define MAX_RAY_DEPTH 5
 
-float mix(const float &a, const float &b, const float &mix)
+float mix(const float& a, const float& b, const float& mix)
 {
 	return b * mix + a * (1 - mix);
 }
@@ -137,10 +138,10 @@ float mix(const float &a, const float &b, const float &mix)
 // the background color.
 //[/comment]
 Vec3f trace(
-	const Vec3f &rayorig,
-	const Vec3f &raydir,
-	const std::vector<Sphere> &spheres,
-	const int &depth)
+	const Vec3f& rayorig,
+	const Vec3f& raydir,
+	const std::vector<Sphere>& spheres,
+	const int& depth)
 {
 	//if (raydir.length() != 1) std::cerr << "Error " << raydir << std::endl;
 	float tnear = INFINITY;
@@ -175,7 +176,7 @@ Vec3f trace(
 		float fresneleffect = mix(pow(1 - facingratio, 3), 1, 0.1);
 		// compute reflection direction (not need to normalize because all vectors
 		// are already normalized)
-		Vec3f refldir = raydir - nhit * 2 * raydir.dot(nhit); 
+		Vec3f refldir = raydir - nhit * 2 * raydir.dot(nhit);
 		refldir.normalize();
 		Vec3f reflection = trace(phit + nhit * bias, refldir, spheres, depth + 1);
 		Vec3f refraction = 0;
@@ -184,7 +185,7 @@ Vec3f trace(
 			float ior = 1.1, eta = (inside) ? ior : 1 / ior; // are we inside or outside the surface?
 			float cosi = -nhit.dot(raydir);
 			float k = 1 - eta * eta * (1 - cosi * cosi);
-			Vec3f refrdir = raydir * eta + nhit * (eta *  cosi - sqrt(k));
+			Vec3f refrdir = raydir * eta + nhit * (eta * cosi - sqrt(k));
 			refrdir.normalize();
 			refraction = trace(phit - nhit * bias, refrdir, spheres, depth + 1);
 		}
@@ -224,7 +225,7 @@ Vec3f trace(
 // trace it and return a color. If the ray hits a sphere, we return the color of the
 // sphere at the intersection point, else we return the background color.
 //[/comment]
-void render(const std::vector<Sphere> &spheres, int iteration)
+void render(const std::vector<Sphere>& spheres, int iteration)
 {
 	// quick and dirty
 	unsigned width = 640, height = 480;
@@ -233,7 +234,7 @@ void render(const std::vector<Sphere> &spheres, int iteration)
 
 	// Recommended Production Resolution
 	//unsigned width = 1920, height = 1080;
-	Vec3f *image = new Vec3f[width * height], *pixel = image;
+	Vec3f* image = new Vec3f[width * height], * pixel = image;
 	float invWidth = 1 / float(width), invHeight = 1 / float(height);
 	unsigned fov = 30, aspectratio = width / height; //changed fov and width/height from float to int
 	float angle = tan(M_PI * 0.5 * fov / 180.);
@@ -257,12 +258,14 @@ void render(const std::vector<Sphere> &spheres, int iteration)
 	char* filename = (char*)"./spheres" + iteration + (char)".ppm";
 
 	std::ofstream ofs(filename, std::ios::out | std::ios::binary);
+	std::stringstream fileStream;
 	ofs << "P6\n" << width << " " << height << "\n255\n";
 	for (unsigned i = width * height; --i;) { //for loop optimisation - optimised
-		ofs << (unsigned char)(std::min(float(1), image[i].x) * 255) <<
+		fileStream << (unsigned char)(std::min(float(1), image[i].x) * 255) <<
 			(unsigned char)(std::min(float(1), image[i].y) * 255) <<
 			(unsigned char)(std::min(float(1), image[i].z) * 255);
 	}
+	ofs << fileStream.str();
 	ofs.close();
 	delete[] image;
 }
@@ -276,7 +279,7 @@ void BasicRender()
 	spheres.push_back(Sphere(Vec3f(0.0, 0, -20), 4, Vec3f(1.00, 0.32, 0.36), 1, 0.5)); // The radius paramter is the value we will change
 	spheres.push_back(Sphere(Vec3f(5.0, -1, -15), 2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));
 	spheres.push_back(Sphere(Vec3f(5.0, 0, -25), 3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));
-	
+
 	// This creates a file, titled 1.ppm in the current working directory
 	render(spheres, 1);
 
@@ -350,31 +353,44 @@ void SimpleShrinking()
 		spheres.clear();
 	}
 }
+void renderFrame(std::vector<Sphere> spheres, unsigned r) {
+
+	spheres.push_back(Sphere(Vec3f(0.0, -10004, -20), 10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));
+	spheres.push_back(Sphere(Vec3f(0.0, 0, -20), r / 100, Vec3f(1.00, 0.32, 0.36), 1, 0.5)); // Radius++ change here
+	spheres.push_back(Sphere(Vec3f(5.0, -1, -15), 2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));
+	spheres.push_back(Sphere(Vec3f(5.0, 0, -25), 3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));
+	render(spheres, r);
+	std::cout << "Rendered and saved spheres" << r << ".ppm" << std::endl;
+	// Dont forget to clear the Vector holding the spheres.
+	spheres.clear();
+}
 
 void SmoothScaling()
 {
 	std::vector<Sphere> spheres;
 	// Vector structure for Sphere (position, radius, surface color, reflectivity, transparency, emission color)
 
-	for (unsigned r = 100; r--;) // float to unsigned - optimised //for loop optimisation - optimised
+	for (unsigned r = 25; r--;) // float to unsigned - optimised //for loop optimisation - optimised
 	{
-		spheres.push_back(Sphere(Vec3f(0.0, -10004, -20), 10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));
-		spheres.push_back(Sphere(Vec3f(0.0, 0, -20), r / 100, Vec3f(1.00, 0.32, 0.36), 1, 0.5)); // Radius++ change here
-		spheres.push_back(Sphere(Vec3f(5.0, -1, -15), 2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));
-		spheres.push_back(Sphere(Vec3f(5.0, 0, -25), 3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));
-		render(spheres, r);
-		std::cout << "Rendered and saved spheres" << r << ".ppm" << std::endl;
-		// Dont forget to clear the Vector holding the spheres.
-		spheres.clear();
+		std::thread thread1(renderFrame, spheres, r);
+		std::thread thread2(renderFrame, spheres, r + 25);
+		std::thread thread3(renderFrame, spheres, r + 50);
+		std::thread thread4(renderFrame, spheres, r + 75);
 
+		thread1.join();
+		thread2.join();
+		thread3.join();
+		thread4.join();
 	}
 }
+
+
 //[comment]
 // In the main function, we will create the scene which is composed of 5 spheres
 // and 1 light (which is also a sphere). Then, once the scene description is complete
 // we render that scene, by calling the render() function.
 //[/comment]
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
 	auto start = std::chrono::steady_clock::now();
 	// This sample only allows one choice per program execution. Feel free to improve upon this

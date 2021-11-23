@@ -1,136 +1,137 @@
 ﻿  main.cpp
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(40,1): warning C4005: 'INFINITY': macro redefinition
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\corecrt_math.h(88): message : see previous definition of 'INFINITY'
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(145,2): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(165,19): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(171,60): warning C4305: 'argument': truncation from 'double' to 'const float'
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(171,32): warning C4244: 'argument': conversion from 'double' to 'const float', possible loss of data
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(180,19): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(194,3): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(200,5): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(235,14): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(239,13): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(240,13): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(253,64): warning C4302: 'type cast': truncation from 'const char *' to 'char'
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(271,81): warning C4305: 'argument': truncation from 'double' to 'T'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(45,1): warning C4005: 'INFINITY': macro redefinition
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\corecrt_math.h(90): message : see previous definition of 'INFINITY'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(150,2): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(170,19): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(176,60): warning C4305: 'argument': truncation from 'double' to 'const float'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(185,19): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(199,3): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(205,5): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(240,14): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(244,13): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(245,13): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(258,64): warning C4302: 'type cast': truncation from 'const char *' to 'char'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(278,81): warning C4305: 'argument': truncation from 'double' to 'T'
           with
           [
               T=float
           ]
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(272,72): warning C4305: 'argument': truncation from 'double' to 'T'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(279,72): warning C4305: 'argument': truncation from 'double' to 'T'
           with
           [
               T=float
           ]
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(273,73): warning C4305: 'argument': truncation from 'double' to 'T'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(280,73): warning C4305: 'argument': truncation from 'double' to 'T'
           with
           [
               T=float
           ]
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(274,72): warning C4305: 'argument': truncation from 'double' to 'T'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(281,72): warning C4305: 'argument': truncation from 'double' to 'T'
           with
           [
               T=float
           ]
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(292,83): warning C4305: 'argument': truncation from 'double' to 'T'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(299,83): warning C4305: 'argument': truncation from 'double' to 'T'
           with
           [
               T=float
           ]
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(293,74): warning C4305: 'argument': truncation from 'double' to 'T'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(300,74): warning C4305: 'argument': truncation from 'double' to 'T'
           with
           [
               T=float
           ]
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(294,75): warning C4305: 'argument': truncation from 'double' to 'T'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(301,75): warning C4305: 'argument': truncation from 'double' to 'T'
           with
           [
               T=float
           ]
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(295,74): warning C4305: 'argument': truncation from 'double' to 'T'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(302,74): warning C4305: 'argument': truncation from 'double' to 'T'
           with
           [
               T=float
           ]
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(297,83): warning C4305: 'argument': truncation from 'double' to 'T'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(304,83): warning C4305: 'argument': truncation from 'double' to 'T'
           with
           [
               T=float
           ]
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(298,74): warning C4305: 'argument': truncation from 'double' to 'T'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(305,74): warning C4305: 'argument': truncation from 'double' to 'T'
           with
           [
               T=float
           ]
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(299,75): warning C4305: 'argument': truncation from 'double' to 'T'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(306,75): warning C4305: 'argument': truncation from 'double' to 'T'
           with
           [
               T=float
           ]
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(300,74): warning C4305: 'argument': truncation from 'double' to 'T'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(307,74): warning C4305: 'argument': truncation from 'double' to 'T'
           with
           [
               T=float
           ]
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(302,83): warning C4305: 'argument': truncation from 'double' to 'T'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(309,83): warning C4305: 'argument': truncation from 'double' to 'T'
           with
           [
               T=float
           ]
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(303,74): warning C4305: 'argument': truncation from 'double' to 'T'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(310,74): warning C4305: 'argument': truncation from 'double' to 'T'
           with
           [
               T=float
           ]
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(304,75): warning C4305: 'argument': truncation from 'double' to 'T'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(311,75): warning C4305: 'argument': truncation from 'double' to 'T'
           with
           [
               T=float
           ]
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(305,74): warning C4305: 'argument': truncation from 'double' to 'T'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(312,74): warning C4305: 'argument': truncation from 'double' to 'T'
           with
           [
               T=float
           ]
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(307,83): warning C4305: 'argument': truncation from 'double' to 'T'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(314,83): warning C4305: 'argument': truncation from 'double' to 'T'
           with
           [
               T=float
           ]
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(308,74): warning C4305: 'argument': truncation from 'double' to 'T'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(315,74): warning C4305: 'argument': truncation from 'double' to 'T'
           with
           [
               T=float
           ]
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(309,75): warning C4305: 'argument': truncation from 'double' to 'T'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(316,75): warning C4305: 'argument': truncation from 'double' to 'T'
           with
           [
               T=float
           ]
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(310,74): warning C4305: 'argument': truncation from 'double' to 'T'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(317,74): warning C4305: 'argument': truncation from 'double' to 'T'
           with
           [
               T=float
           ]
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(357,82): warning C4305: 'argument': truncation from 'double' to 'T'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(358,81): warning C4305: 'argument': truncation from 'double' to 'T'
           with
           [
               T=float
           ]
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(358,79): warning C4305: 'argument': truncation from 'double' to 'T'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(359,78): warning C4305: 'argument': truncation from 'double' to 'T'
           with
           [
               T=float
           ]
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(358,50): warning C4244: 'argument': conversion from 'unsigned int' to 'const float', possible loss of data
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(359,74): warning C4305: 'argument': truncation from 'double' to 'T'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(359,49): warning C4244: 'argument': conversion from 'unsigned int' to 'const float', possible loss of data
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(360,73): warning C4305: 'argument': truncation from 'double' to 'T'
           with
           [
               T=float
           ]
-C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(360,73): warning C4305: 'argument': truncation from 'double' to 'T'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(361,72): warning C4305: 'argument': truncation from 'double' to 'T'
           with
           [
               T=float
           ]
-  RayTracerSmall.vcxproj -> C:\Users\d012751j\Downloads\RayTracerFramework\RayTracerFramework\x64\Debug\RayTracerSmall.exe
+  memoryManager.cpp
+  Generating Code...
+  RayTracerSmall.vcxproj -> C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\x64\Debug\RayTracerSmall.exe
