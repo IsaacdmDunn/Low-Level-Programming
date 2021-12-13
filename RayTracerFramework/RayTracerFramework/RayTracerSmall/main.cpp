@@ -234,7 +234,9 @@ void render(const std::vector<Sphere>& spheres, int iteration)
 
 	// Recommended Production Resolution
 	//unsigned width = 1920, height = 1080;
-	Vec3f* image = new Vec3f[width * height], * pixel = image;
+	Heap* imageHeap = HeapManager::GetHeap("imageHeap"); //(imageHeap) not working
+	Vec3f* image = new Vec3f[width * height];
+	Vec3f *pixel = image;
 	float invWidth = 1 / float(width), invHeight = 1 / float(height);
 	unsigned fov = 30, aspectratio = width / height; //changed fov and width/height from float to int
 	float angle = tan(M_PI * 0.5 * fov / 180.);
@@ -255,7 +257,7 @@ void render(const std::vector<Sphere>& spheres, int iteration)
 	//ss << "./spheres" << iteration << ".ppm";
 	//std::string tempString = ss.c_str();
 	//char* filename = (char*)tempString.c_str();
-	char* filename = (char*)"./spheres" + iteration + (char)".ppm";
+	std::string filename = "./spheres" + std::to_string(iteration) + ".ppm";
 
 	std::ofstream ofs(filename, std::ios::out | std::ios::binary);
 	std::stringstream fileStream;
@@ -268,11 +270,12 @@ void render(const std::vector<Sphere>& spheres, int iteration)
 	ofs << fileStream.str();
 	ofs.close();
 	delete[] image;
+	filename.clear();
 }
 
-void BasicRender()
+void BasicRender(std::vector<Sphere> spheres)
 {
-	std::vector<Sphere> spheres;
+
 	// Vector structure for Sphere (position, radius, surface color, reflectivity, transparency, emission color)
 
 	spheres.push_back(Sphere(Vec3f(0.0, -10004, -20), 10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));
@@ -282,12 +285,11 @@ void BasicRender()
 
 	// This creates a file, titled 1.ppm in the current working directory
 	render(spheres, 1);
-
 }
 
-void SimpleShrinking()
+void SimpleShrinking(std::vector<Sphere> spheres)
 {
-	std::vector<Sphere> spheres;
+	
 	// Vector structure for Sphere (position, radius, surface color, reflectivity, transparency, emission color)
 
 	for (unsigned i = 4; i--;) //changed int to unsigned - optimised //for loop optimisation - optimised
@@ -353,8 +355,8 @@ void SimpleShrinking()
 		spheres.clear();
 	}
 }
-void renderFrame(std::vector<Sphere> spheres, unsigned r) {
-
+void renderFrame(unsigned r, std::vector<Sphere> spheres) {
+	
 	spheres.push_back(Sphere(Vec3f(0.0, -10004, -20), 10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));
 	spheres.push_back(Sphere(Vec3f(0.0, 0, -20), r / 100, Vec3f(1.00, 0.32, 0.36), 1, 0.5)); // Radius++ change here
 	spheres.push_back(Sphere(Vec3f(5.0, -1, -15), 2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));
@@ -373,10 +375,11 @@ void SmoothScaling()
 
 	for (unsigned r = 25; r--;) // float to unsigned - optimised //for loop optimisation - optimised
 	{
-		std::thread thread1(renderFrame, spheres, r);
-		std::thread thread2(renderFrame, spheres, r + 25);
-		std::thread thread3(renderFrame, spheres, r + 50);
-		std::thread thread4(renderFrame, spheres, r + 75);
+		//renderFrame(r);
+		std::thread thread1(renderFrame, r, spheres);
+		std::thread thread2(renderFrame, r + 25, spheres);
+		std::thread thread3(renderFrame, r + 50, spheres);
+		std::thread thread4(renderFrame, r + 75, spheres);
 
 		thread1.join();
 		thread2.join();
@@ -398,12 +401,13 @@ int main(int argc, char** argv)
 	srand(13);
 	//BasicRender();
 	//SimpleShrinking();
+	Heap* imageHeap = HeapManager::CreateHeap("imageHeap");
 	SmoothScaling();
 	auto end = std::chrono::steady_clock::now();
 	std::chrono::duration<double> elapsed_seconds = end - start;
 	std::cout << "elapsed time: " << elapsed_seconds.count() << "s\n";
 	
-	HeapManager::GetDefaultHeap().showAllocatedMemory();
+	//HeapManager::GetDefaultHeap().showAllocatedMemory();
 	return 0;
 }
 

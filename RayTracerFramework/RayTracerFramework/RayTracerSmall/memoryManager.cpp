@@ -9,7 +9,7 @@ void* operator new(size_t size, Heap* pHeap)
 	pHeader->pHeap = pHeap;
 	pHeader->nSize = size;
 
-	pHeap->allocate(pHeader->nSize);
+	pHeap->allocate(pHeader->nSize, pHeader);
 	void* pStartMemBlock = pMem + sizeof(AllocHeader);
 	
 	return pStartMemBlock;
@@ -17,13 +17,12 @@ void* operator new(size_t size, Heap* pHeap)
 
 void* operator new(size_t size)
 {
-	HeapManager::GetDefaultHeap().allocate(size);
 	return ::operator new(size, &HeapManager::GetDefaultHeap());
 }
 
 void operator delete(void* pMem)
 {
 	AllocHeader* pHeader = (AllocHeader*)((char*)pMem - sizeof(AllocHeader));
-	pHeader->pHeap->free(pHeader->nSize);
+	pHeader->pHeap->free(pHeader->nSize, pHeader);
 	free(pHeader);
 }

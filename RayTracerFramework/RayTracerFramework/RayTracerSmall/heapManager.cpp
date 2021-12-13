@@ -5,8 +5,8 @@ Heap HeapManager::defaultHeap = Heap("Default Heap");
 
 Heap* HeapManager::CreateHeap(std::string name)
 {
-	std::string heapName = name;
-	Heap* heap = new Heap(heapName);
+	//std::string heapName = name;
+	Heap* heap = new Heap(name);
 	heapMap.insert(std::make_pair(name, heap));
 	return heap;
 }
