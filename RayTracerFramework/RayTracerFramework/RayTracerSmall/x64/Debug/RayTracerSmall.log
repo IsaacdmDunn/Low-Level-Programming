@@ -1,9 +1,10 @@
 ﻿  main.cpp
 C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(45,1): warning C4005: 'INFINITY': macro redefinition
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\corecrt_math.h(90): message : see previous definition of 'INFINITY'
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.16299.0\ucrt\corecrt_math.h(89): message : see previous definition of 'INFINITY'
 C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(150,2): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
 C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(170,19): warning C4305: 'initializing': truncation from 'double' to 'float'
 C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(176,60): warning C4305: 'argument': truncation from 'double' to 'const float'
+C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(176,32): warning C4244: 'argument': conversion from 'double' to 'const float', possible loss of data
 C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(185,19): warning C4305: 'initializing': truncation from 'double' to 'float'
 C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(199,3): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
 C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\RayTracerSmall\main.cpp(205,5): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
@@ -132,6 +133,4 @@ C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTrac
           [
               T=float
           ]
-  memoryManager.cpp
-  Generating Code...
   RayTracerSmall.vcxproj -> C:\Users\ganda\Documents\GitHub\Low-Level-Programming\RayTracerFramework\RayTracerFramework\x64\Debug\RayTracerSmall.exe

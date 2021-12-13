@@ -1,18 +1,29 @@
 #include "memoryManager.h"
 #include <iostream>
 
-void* memoryManager::operator new(size_t size)
+void* operator new(size_t size, Heap* pHeap)
 {
-    std::cerr << "allocating " << size << " bytes\n";
-    void* mem = malloc(size);
-    if (mem)
-        return mem;
-    else
-        throw std::bad_alloc();
+	size_t nRequestedBytes = size + sizeof(AllocHeader);
+	char* pMem = (char*)malloc(nRequestedBytes);
+	AllocHeader* pHeader = (AllocHeader*)pMem;
+	pHeader->pHeap = pHeap;
+	pHeader->nSize = size;
+
+	pHeap->allocate(pHeader->nSize);
+	void* pStartMemBlock = pMem + sizeof(AllocHeader);
+	
+	return pStartMemBlock;
 }
 
-void memoryManager::operator delete(void* p, size_t size)
+void* operator new(size_t size)
 {
-    std::cerr << "deallocating at " << p << std::endl;
-    free(p);
+	HeapManager::GetDefaultHeap().allocate(size);
+	return ::operator new(size, &HeapManager::GetDefaultHeap());
+}
+
+void operator delete(void* pMem)
+{
+	AllocHeader* pHeader = (AllocHeader*)((char*)pMem - sizeof(AllocHeader));
+	pHeader->pHeap->free(pHeader->nSize);
+	free(pHeader);
 }

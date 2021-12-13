@@ -32,7 +32,7 @@
 #include <sstream>
 #include <string.h>
 #include <iomanip>
-//#include "memoryManager.h"
+#include "memoryManager.h"
 #include "json.hpp"
 #include <chrono>
 #include <thread>
@@ -360,6 +360,7 @@ void renderFrame(std::vector<Sphere> spheres, unsigned r) {
 	spheres.push_back(Sphere(Vec3f(5.0, -1, -15), 2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));
 	spheres.push_back(Sphere(Vec3f(5.0, 0, -25), 3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));
 	render(spheres, r);
+	
 	std::cout << "Rendered and saved spheres" << r << ".ppm" << std::endl;
 	// Dont forget to clear the Vector holding the spheres.
 	spheres.clear();
@@ -401,23 +402,25 @@ int main(int argc, char** argv)
 	auto end = std::chrono::steady_clock::now();
 	std::chrono::duration<double> elapsed_seconds = end - start;
 	std::cout << "elapsed time: " << elapsed_seconds.count() << "s\n";
+	
+	HeapManager::GetDefaultHeap().showAllocatedMemory();
 	return 0;
 }
 
-//overwrites new operator with malloc
-void* ::operator new(size_t size)
-{
-	std::cerr << "allocating " << size << " bytes\n";
-	void* mem = malloc(size);
-	if (mem)
-		return mem;
-	else
-		throw std::bad_alloc();
-}
-
-//overwrites delete operator with free
-void ::operator delete(void* p, size_t size)
-{
-	std::cerr << "deallocating " << size << "bytes at " << p << std::endl;
-	free(p);
-}
+////overwrites new operator with malloc
+//void* ::operator new(size_t size)
+//{
+//	std::cerr << "allocating " << size << " bytes\n";
+//	void* mem = malloc(size);
+//	if (mem)
+//		return mem;
+//	else
+//		throw std::bad_alloc();
+//}
+//
+////overwrites delete operator with free
+//void ::operator delete(void* p, size_t size)
+//{
+//	std::cerr << "deallocating " << size << "bytes at " << p << std::endl;
+//	free(p);
+//}
