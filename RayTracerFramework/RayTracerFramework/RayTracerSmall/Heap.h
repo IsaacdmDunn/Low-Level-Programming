@@ -12,7 +12,7 @@ public:
 	const char* GetName() const;
 
 	void allocate(size_t size, AllocHeader* header);
-	void showAllocatedMemory();
+	void showAllocatedMemory(std::string name);
 	void free(size_t size, AllocHeader * header);
 
 	AllocHeader* head = NULL;

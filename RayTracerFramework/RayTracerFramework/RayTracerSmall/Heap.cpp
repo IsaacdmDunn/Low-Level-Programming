@@ -15,7 +15,7 @@ void Heap::allocate(size_t size, AllocHeader* header)
 {
 	
 	allocated += size;
-	//header->nSize = size;
+	header->nSize = size;
 	header->previous = NULL;
 	header->next = head;
 	if (head != NULL)
@@ -26,9 +26,9 @@ void Heap::allocate(size_t size, AllocHeader* header)
 }
 
 //fix mem leak
-void Heap::showAllocatedMemory()
+void Heap::showAllocatedMemory(std::string name)
 {
-	std::cout << allocated << std::endl;
+	std::cout << name << " allocated with:" << allocated << std::endl;
 
 	AllocHeader* current = head;
 	while (current != NULL)

@@ -236,6 +236,9 @@ void render(const std::vector<Sphere>& spheres, int iteration)
 	//unsigned width = 1920, height = 1080;
 	Heap* imageHeap = HeapManager::GetHeap("imageHeap"); //(imageHeap) not working
 	Vec3f* image = new Vec3f[width * height];
+
+	int* bob = new(imageHeap) int;
+	*bob = 5;
 	Vec3f *pixel = image;
 	float invWidth = 1 / float(width), invHeight = 1 / float(height);
 	unsigned fov = 30, aspectratio = width / height; //changed fov and width/height from float to int
@@ -407,7 +410,8 @@ int main(int argc, char** argv)
 	std::chrono::duration<double> elapsed_seconds = end - start;
 	std::cout << "elapsed time: " << elapsed_seconds.count() << "s\n";
 	
-	//HeapManager::GetDefaultHeap().showAllocatedMemory();
+	HeapManager::GetDefaultHeap().showAllocatedMemory("default heap");
+	HeapManager::GetHeap("imageHeap")->showAllocatedMemory("image heap");
 	return 0;
 }
 
