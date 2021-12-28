@@ -9,6 +9,7 @@ public:
 	static Heap* GetHeap(std::string name);
 	static void CleanHeaps();
 	static Heap& GetDefaultHeap();
+	static void Debug();
 
 
 private:

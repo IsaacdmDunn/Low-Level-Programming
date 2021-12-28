@@ -7,6 +7,13 @@ struct AllocHeader {
 	int nSize;
 	AllocHeader* previous = NULL;
 	AllocHeader* next = NULL;
+	int checkVal = 0xDEADC0DE;
+};
+
+struct Footer {
+	int reserved;
+
+	int checkVal = 0xDEADC0DE;
 };
 
 	void* operator new(size_t size, Heap* pHeap);

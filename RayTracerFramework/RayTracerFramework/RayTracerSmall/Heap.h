@@ -14,7 +14,7 @@ public:
 	void allocate(size_t size, AllocHeader* header);
 	void showAllocatedMemory(std::string name);
 	void free(size_t size, AllocHeader * header);
-
+	void DebugHeap();
 	AllocHeader* head = NULL;
 private:
 	std::string m_Name;

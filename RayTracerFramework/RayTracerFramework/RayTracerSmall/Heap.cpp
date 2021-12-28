@@ -15,6 +15,7 @@ void Heap::allocate(size_t size, AllocHeader* header)
 {
 	
 	allocated += size;
+	header->checkVal = 0xDEADC0DE;
 	header->nSize = size;
 	header->previous = NULL;
 	header->next = head;
@@ -61,4 +62,33 @@ void Heap::free(size_t size, AllocHeader * header)
 	{
 		header->previous->next = header->next;
 	}
+}
+
+void Heap::DebugHeap()
+{
+	std::cout << "Checking integrity of " << m_Name << std::endl;
+
+	unsigned int errorCount = 0;
+
+	if (head != NULL) {
+		AllocHeader* pCurrent = head;
+
+		while (pCurrent != NULL) {
+			if (pCurrent->checkVal != 0xDEADC0DE) {
+				std::cout << "Error mismatch header check code" << std::endl;
+				errorCount++;
+			}
+
+			void* pFooterAddr = ((char*)pCurrent + sizeof(AllocHeader) + pCurrent->nSize);
+			Footer* pFooter = (Footer*)pFooterAddr;
+			if (pFooter->checkVal != 0xDEADC0DE) {
+				std::cout << "Error mismatch footer check code" << std::endl;
+				errorCount++;
+			}
+
+			pCurrent = pCurrent->next;
+		}
+	}
+
+	std::cout << "Errors in " << m_Name << ": " << errorCount << std::endl;
 }

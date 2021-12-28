@@ -412,6 +412,7 @@ int main(int argc, char** argv)
 	
 	HeapManager::GetDefaultHeap().showAllocatedMemory("default heap");
 	HeapManager::GetHeap("imageHeap")->showAllocatedMemory("image heap");
+	HeapManager::Debug();
 	return 0;
 }
 

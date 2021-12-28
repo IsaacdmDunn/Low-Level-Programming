@@ -25,3 +25,12 @@ Heap& HeapManager::GetDefaultHeap()
 {
 	return defaultHeap;
 }
+
+void HeapManager::Debug()
+{
+	
+	for (auto it = heapMap.begin(); it != heapMap.end(); it++) {
+		it->second->DebugHeap();
+	}
+	defaultHeap.DebugHeap();
+}
