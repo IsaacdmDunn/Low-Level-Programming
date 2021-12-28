@@ -37,6 +37,9 @@
 #include "json.hpp"
 #include <chrono>
 #include <thread>
+#include <mutex>          // std::mutex
+
+std::mutex mtx;
 
 #if defined __linux__ || defined __APPLE__
 // "Compiled for Linux
@@ -378,7 +381,7 @@ void SimpleShrinking(std::vector<Sphere> spheres)
 	}
 }
 void renderFrame(unsigned r, std::vector<Sphere> spheres) {
-	
+	mtx.lock();
 	spheres.push_back(Sphere(Vec3f(0.0, -10004, -20), 10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));
 	spheres.push_back(Sphere(Vec3f(0.0, 0, -20), r / 100, Vec3f(1.00, 0.32, 0.36), 1, 0.5)); // Radius++ change here
 	spheres.push_back(Sphere(Vec3f(5.0, -1, -15), 2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));
@@ -388,6 +391,7 @@ void renderFrame(unsigned r, std::vector<Sphere> spheres) {
 	std::cout << "Rendered and saved spheres" << r << ".ppm" << std::endl;
 	// Dont forget to clear the Vector holding the spheres.
 	spheres.clear();
+	mtx.unlock();
 }
 
 void SmoothScaling()

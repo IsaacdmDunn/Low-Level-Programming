@@ -11,7 +11,9 @@ class memoryPool
 {
 public:
 	memoryPool(size_t chunksPerBlock)
-		: mChunksPerBlock(chunksPerBlock) {}
+	{
+		mChunksPerBlock = chunksPerBlock;
+	}
 
 	void* allocate(size_t size);
 	void deallocate(void* ptr, size_t size);
