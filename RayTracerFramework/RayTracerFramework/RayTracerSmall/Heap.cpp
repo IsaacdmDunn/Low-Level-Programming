@@ -28,17 +28,21 @@ void Heap::allocate(size_t size, AllocHeader* header)
 //fix mem leak
 void Heap::showAllocatedMemory(std::string name)
 {
-	std::cout << name << " allocated with:" << allocated << std::endl;
-
-	AllocHeader* current = head;
-	while (current != NULL)
+	if (head != NULL)
 	{
-		if (current == NULL) break;
-		std::cout << "Address: " << current << "   Size: " << current->nSize << std::endl;
-		if (current->next == NULL) break;
-		current = current->next;
+
+
+		std::cout << name << " allocated with:" << allocated << std::endl;
+
+		AllocHeader* current = head;
+		while (current != NULL)
+		{
+			if (current == NULL) break;
+			std::cout << "Address: " << current << "   Size: " << current->nSize << std::endl;
+			if (current->next == NULL) { break; }
+			current = current->next;
+		}
 	}
-	
 }
 
 void Heap::free(size_t size, AllocHeader * header)
