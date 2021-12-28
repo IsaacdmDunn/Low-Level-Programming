@@ -33,6 +33,7 @@
 #include <string.h>
 #include <iomanip>
 #include "memoryManager.h"
+#include "memoryPool.h"
 #include "json.hpp"
 #include <chrono>
 #include <thread>
@@ -44,7 +45,25 @@
 #define M_PI 3.141592653589793
 #define INFINITY 1e8
 #endif
+struct Object {
 
+	// Object data, 16 bytes:
+
+	uint64_t data[2];
+
+	// Declare out custom allocator for
+	// the `Object` structure:
+
+	static memoryPool allocator;
+
+	static void* operator new(size_t size) {
+		return allocator.allocate(size);
+	}
+
+	static void operator delete(void* ptr, size_t size) {
+		return allocator.deallocate(ptr, size);
+	}
+};
 template<typename T>
 class Vec3
 {
@@ -413,6 +432,39 @@ int main(int argc, char** argv)
 	HeapManager::GetDefaultHeap().showAllocatedMemory("default heap");
 	HeapManager::GetHeap("imageHeap")->showAllocatedMemory("image heap");
 	HeapManager::Debug();
+
+	constexpr int arraySize = 10;
+
+	Object* objects[arraySize];
+
+	// Two `uint64_t`, 16 bytes.
+	std::cout << "size(Object) = " << sizeof(Object) << std::endl << std::endl;
+
+	// Allocate 10 objects. This causes allocating two larger,
+	// blocks since we store only 8 chunks per block:
+
+	std::cout << "About to allocate " << arraySize << " objects" << std::endl;
+
+	for (int i = 0; i < arraySize; ++i) {
+		objects[i] = new Object();
+		std::cout << "new [" << i << "] = " << objects[i] << std::endl;
+	}
+
+	std::cout << std::endl;
+
+	// Deallocated all the objects:
+
+	for (int i = 9; i >= 0; --i) {
+		std::cout << "delete [" << i << "] = " << objects[i] << std::endl;
+		delete objects[i];
+	}
+
+	std::cout << std::endl;
+
+	// New object reuses previous block:
+
+	objects[0] = new Object();
+	std::cout << "new [0] = " << objects[0] << std::endl << std::endl;
 	return 0;
 }
 
@@ -433,3 +485,9 @@ int main(int argc, char** argv)
 //	std::cerr << "deallocating " << size << "bytes at " << p << std::endl;
 //	free(p);
 //}
+
+
+
+// Instantiate our allocator, using 8 chunks per block:
+
+memoryPool Object::allocator{ 8 };

@@ -146,12 +146,14 @@
     <ClCompile Include="heapManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="memoryManager.cpp" />
+    <ClCompile Include="memoryPool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\..\Downloads\json-develop\json-develop\single_include\nlohmann\json.hpp" />
     <ClInclude Include="Heap.h" />
     <ClInclude Include="heapManager.h" />
     <ClInclude Include="memoryManager.h" />
+    <ClInclude Include="memoryPool.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
