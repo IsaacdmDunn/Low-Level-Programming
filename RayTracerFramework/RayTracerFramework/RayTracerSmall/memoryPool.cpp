@@ -9,11 +9,6 @@ void* memoryPool::allocate(size_t size)
 	}
 	Chunk* freeChunk = chunk;
 
-	// Advance (bump) the allocation pointer to the next chunk.
-	//
-	// When no chunks left, the `mAlloc` will be set to `nullptr`, and
-	// this will cause allocation of a new block on the next request:
-
 	chunk = chunk->next;
 
 	return freeChunk;

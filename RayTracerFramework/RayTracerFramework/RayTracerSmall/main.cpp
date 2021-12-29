@@ -99,6 +99,16 @@ public:
 		os << "[" << v.x << " " << v.y << " " << v.z << "]";
 		return os;
 	}
+
+	static memoryPool allocator;
+
+	static void* operator new(size_t size) {
+		return allocator.allocate(size);
+	}
+
+	static void operator delete(void* ptr, size_t size) {
+		return allocator.deallocate(ptr, size);
+	}
 };
 
 typedef Vec3<float> Vec3f;
@@ -257,11 +267,14 @@ void render(const std::vector<Sphere>& spheres, int iteration)
 	// Recommended Production Resolution
 	//unsigned width = 1920, height = 1080;
 	Heap* imageHeap = HeapManager::GetHeap("imageHeap"); //(imageHeap) not working
-	Vec3f* image = new Vec3f[width * height];
+	
+	Vec3f* image = new Vec3f;
+	image = new Vec3f[width * height];
+	Vec3f* pixel = new Vec3f;
+	pixel = image;
 
-	int* bob = new(imageHeap) int;
-	*bob = 5;
-	Vec3f *pixel = image;
+	//Vec3f* image = new Vec3f[width * height];
+	//Vec3f *pixel = image;
 	float invWidth = 1 / float(width), invHeight = 1 / float(height);
 	unsigned fov = 30, aspectratio = width / height; //changed fov and width/height from float to int
 	float angle = tan(M_PI * 0.5 * fov / 180.);
@@ -472,26 +485,7 @@ int main(int argc, char** argv)
 	return 0;
 }
 
-////overwrites new operator with malloc
-//void* ::operator new(size_t size)
-//{
-//	std::cerr << "allocating " << size << " bytes\n";
-//	void* mem = malloc(size);
-//	if (mem)
-//		return mem;
-//	else
-//		throw std::bad_alloc();
-//}
-//
-////overwrites delete operator with free
-//void ::operator delete(void* p, size_t size)
-//{
-//	std::cerr << "deallocating " << size << "bytes at " << p << std::endl;
-//	free(p);
-//}
 
-
-
-// Instantiate our allocator, using 8 chunks per block:
 
 memoryPool Object::allocator{ 8 };
+memoryPool Vec3f::allocator{ 8 };
