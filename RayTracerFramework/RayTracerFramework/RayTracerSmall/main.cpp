@@ -36,8 +36,19 @@
 #include "memoryPool.h"
 #include "json.hpp"
 #include <chrono>
+#if defined _WIN32
 #include <thread>
-#include <mutex>          // std::mutex
+#include <mutex>   
+#elif defined __linux__
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <stdlib.h>
+#include <stdio.h>
+#endif
+
+
+
 
 std::mutex mtx;
 
@@ -412,9 +423,11 @@ void SmoothScaling()
 	std::vector<Sphere> spheres;
 	// Vector structure for Sphere (position, radius, surface color, reflectivity, transparency, emission color)
 
+
+	
 	for (unsigned r = 25; r--;) // float to unsigned - optimised //for loop optimisation - optimised
-	{
-		//renderFrame(r);
+	{	
+		#ifdef _WIN32
 		std::thread thread1(renderFrame, r, spheres);
 		std::thread thread2(renderFrame, r + 25, spheres);
 		std::thread thread3(renderFrame, r + 50, spheres);
@@ -424,6 +437,18 @@ void SmoothScaling()
 		thread2.join();
 		thread3.join();
 		thread4.join();
+		#elif defined __linux__
+		pid_t thread1 = vfork();
+		renderFrame(r, spheres);
+		pid_t thread2 = vfork();
+		renderFrame(r+25, spheres);
+		pid_t thread3 = vfork();
+		renderFrame(r+50, spheres);
+		pid_t thread4 = vfork();
+		renderFrame(r+75, spheres);
+		#endif
+		//renderFrame(r);
+		
 	}
 }
 
@@ -488,4 +513,4 @@ int main(int argc, char** argv)
 
 
 memoryPool Object::allocator{ 8 };
-memoryPool Vec3f::allocator{ 8 };
+memoryPool Vec3f::allocator{ 200 };
