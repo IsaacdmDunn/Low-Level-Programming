@@ -510,7 +510,5 @@ int main(int argc, char** argv)
 	return 0;
 }
 
-
-
 memoryPool Object::allocator{ 8 };
 memoryPool Vec3f::allocator{ 200 };

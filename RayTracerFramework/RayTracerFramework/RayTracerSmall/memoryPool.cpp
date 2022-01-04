@@ -1,5 +1,5 @@
 #include "memoryPool.h"
-#include <corecrt_malloc.h>
+//#include <corecrt_malloc.h>
 #include <iostream>
 
 void* memoryPool::allocate(size_t size)
