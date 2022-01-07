@@ -42,6 +42,7 @@
 #elif defined __linux__
 #include <unistd.h>
 #include <pthread.h>
+pthread_mutex_t lock;
 #endif
 
 
@@ -378,9 +379,9 @@ void* renderFrameLinux(void* r) {
 	spheres.push_back(Sphere(Vec3f(5.0, -1, -15), 2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));
 	spheres.push_back(Sphere(Vec3f(5.0, 0, -25), 3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));
 	render(spheres, _r);
-
+	pthread_mutex_lock(&lock);
 	std::cout << "Rendered and saved spheres" << _r << ".ppm" << std::endl;
-
+	pthread_mutex_unlock(&lock);
 	// Dont forget to clear the Vector holding the spheres.
 	spheres.clear();
 }
