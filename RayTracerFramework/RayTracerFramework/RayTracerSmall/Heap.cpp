@@ -13,20 +13,27 @@ const char* Heap::GetName() const
 
 void Heap::allocate(size_t size, AllocHeader* header)
 {
-	
-	allocated += size;
-	header->checkVal = 0xDEADC0DE;
-	header->nSize = size;
-	header->previous = NULL;
-	header->next = head;
-	if (head != NULL)
+	try
 	{
-		head->previous = header;
+		allocated += size;
+		header->checkVal = 0xDEADC0DE;
+		header->nSize = size;
+		header->previous = NULL;
+		header->next = head;
+		if (head != NULL)
+		{
+			head->previous = header;
+		}
+		head = header;
 	}
-	head = header;
+	catch (std::exception e)
+	{
+		std::cout << "exception thrown." << std::endl;
+		throw;
+	}
+	
 }
 
-//fix mem leak
 void Heap::showAllocatedMemory(std::string name)
 {
 	if (head != NULL)

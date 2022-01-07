@@ -3,25 +3,21 @@
 
 struct Chunk {
 	
-	Chunk* next;
+	Chunk* mNext;
 };
-
-
 
 class memoryPool
 {
 public:
-	memoryPool(size_t chunksPerBlock)
-	{
-		mChunksPerBlock = chunksPerBlock;
-	}
+	memoryPool(size_t chunksPerBlock);
+
 
 	void* allocate(size_t size);
-	void deallocate(void* ptr, size_t size);
+	void deallocate(void* pMem, size_t size);
 
 private:
 	size_t mChunksPerBlock;
-	Chunk* chunk = nullptr;
-	Chunk* allocateBlock(size_t chunkSize);
+	Chunk* chunk;
+	Chunk* allocateBlock(size_t size);
 };
 

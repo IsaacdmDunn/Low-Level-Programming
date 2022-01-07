@@ -40,11 +40,8 @@
 #include <thread>
 #include <mutex>   
 #elif defined __linux__
-#include <sys/types.h>
 #include <unistd.h>
-#include <sys/wait.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include <pthread.h>
 #endif
 
 
@@ -59,25 +56,7 @@ std::mutex mtx;
 #define M_PI 3.141592653589793
 #define INFINITY 1e8
 #endif
-struct Object {
 
-	// Object data, 16 bytes:
-
-	uint64_t data[2];
-
-	// Declare out custom allocator for
-	// the `Object` structure:
-
-	static memoryPool allocator;
-
-	static void* operator new(size_t size) {
-		return allocator.allocate(size);
-	}
-
-	static void operator delete(void* ptr, size_t size) {
-		return allocator.deallocate(ptr, size);
-	}
-};
 template<typename T>
 class Vec3
 {
@@ -111,14 +90,14 @@ public:
 		return os;
 	}
 
-	static memoryPool allocator;
+	static memoryPool alloc;
 
 	static void* operator new(size_t size) {
-		return allocator.allocate(size);
+		return alloc.allocate(size);
 	}
 
 	static void operator delete(void* ptr, size_t size) {
-		return allocator.deallocate(ptr, size);
+		return alloc.deallocate(ptr, size);
 	}
 };
 
@@ -277,15 +256,13 @@ void render(const std::vector<Sphere>& spheres, int iteration)
 
 	// Recommended Production Resolution
 	//unsigned width = 1920, height = 1080;
-	Heap* imageHeap = HeapManager::GetHeap("imageHeap"); //(imageHeap) not working
-	
+	Heap* imageHeap = HeapManager::GetHeap("imageHeap"); 
 	Vec3f* image = new Vec3f;
-	image = new Vec3f[width * height];
 	Vec3f* pixel = new Vec3f;
+	image = new Vec3f[width * height];
 	pixel = image;
 
-	//Vec3f* image = new Vec3f[width * height];
-	//Vec3f *pixel = image;
+	
 	float invWidth = 1 / float(width), invHeight = 1 / float(height);
 	unsigned fov = 30, aspectratio = width / height; //changed fov and width/height from float to int
 	float angle = tan(M_PI * 0.5 * fov / 180.);
@@ -405,17 +382,18 @@ void SimpleShrinking(std::vector<Sphere> spheres)
 	}
 }
 void renderFrame(unsigned r, std::vector<Sphere> spheres) {
-	mtx.lock();
 	spheres.push_back(Sphere(Vec3f(0.0, -10004, -20), 10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));
 	spheres.push_back(Sphere(Vec3f(0.0, 0, -20), r / 100, Vec3f(1.00, 0.32, 0.36), 1, 0.5)); // Radius++ change here
 	spheres.push_back(Sphere(Vec3f(5.0, -1, -15), 2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));
 	spheres.push_back(Sphere(Vec3f(5.0, 0, -25), 3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));
 	render(spheres, r);
-	
+
+	mtx.lock();
 	std::cout << "Rendered and saved spheres" << r << ".ppm" << std::endl;
+
+	mtx.unlock();
 	// Dont forget to clear the Vector holding the spheres.
 	spheres.clear();
-	mtx.unlock();
 }
 
 void SmoothScaling()
@@ -437,6 +415,7 @@ void SmoothScaling()
 		thread2.join();
 		thread3.join();
 		thread4.join();
+
 		#elif defined __linux__
 		pid_t thread1 = vfork();
 		renderFrame(r, spheres);
@@ -447,8 +426,6 @@ void SmoothScaling()
 		pid_t thread4 = vfork();
 		renderFrame(r+75, spheres);
 		#endif
-		//renderFrame(r);
-		
 	}
 }
 
@@ -474,41 +451,7 @@ int main(int argc, char** argv)
 	HeapManager::GetDefaultHeap().showAllocatedMemory("default heap");
 	HeapManager::GetHeap("imageHeap")->showAllocatedMemory("image heap");
 	HeapManager::Debug();
-
-	constexpr int arraySize = 10;
-
-	Object* objects[arraySize];
-
-	// Two `uint64_t`, 16 bytes.
-	std::cout << "size(Object) = " << sizeof(Object) << std::endl << std::endl;
-
-	// Allocate 10 objects. This causes allocating two larger,
-	// blocks since we store only 8 chunks per block:
-
-	std::cout << "About to allocate " << arraySize << " objects" << std::endl;
-
-	for (int i = 0; i < arraySize; ++i) {
-		objects[i] = new Object();
-		std::cout << "new [" << i << "] = " << objects[i] << std::endl;
-	}
-
-	std::cout << std::endl;
-
-	// Deallocated all the objects:
-
-	for (int i = 9; i >= 0; --i) {
-		std::cout << "delete [" << i << "] = " << objects[i] << std::endl;
-		delete objects[i];
-	}
-
-	std::cout << std::endl;
-
-	// New object reuses previous block:
-
-	objects[0] = new Object();
-	std::cout << "new [0] = " << objects[0] << std::endl << std::endl;
-	return 0;
+	
 }
 
-memoryPool Object::allocator{ 8 };
-memoryPool Vec3f::allocator{ 200 };
+memoryPool Vec3f::alloc{ 8 };

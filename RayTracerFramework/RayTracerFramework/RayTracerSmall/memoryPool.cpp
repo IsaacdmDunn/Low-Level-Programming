@@ -1,51 +1,47 @@
 #include "memoryPool.h"
-//#include <corecrt_malloc.h>
 #include <iostream>
+
+memoryPool::memoryPool(size_t chunksPerBlock)
+{
+	mChunksPerBlock = chunksPerBlock;
+}
+
+Chunk* memoryPool::allocateBlock(size_t size)
+{
+	std::cout << "Allocating new block with " << mChunksPerBlock << " chunks." << std::endl;
+
+	size_t blockSize = mChunksPerBlock * size;
+	Chunk* blockBegin = reinterpret_cast<Chunk*>(malloc(blockSize));
+	Chunk* chunk = blockBegin;
+
+	for (int i = 0; i < mChunksPerBlock - 1; i++) {
+		chunk->mNext = reinterpret_cast<Chunk*>(reinterpret_cast<char*>(chunk) + size);
+		chunk = chunk->mNext;
+	}
+
+	chunk->mNext = nullptr;
+
+	return blockBegin;
+}
 
 void* memoryPool::allocate(size_t size)
 {
-	if (chunk == nullptr) {
+	if (chunk == nullptr) 
+	{
 		chunk = allocateBlock(size);
 	}
 	Chunk* freeChunk = chunk;
-
-	chunk = chunk->next;
+	chunk = chunk->mNext;
 
 	return freeChunk;
 }
 
 void memoryPool::deallocate(void* ptr, size_t size)
 {
-	reinterpret_cast<Chunk*>(ptr)->next = chunk;
-
-	// And the allocation pointer is now set
-	// to the returned (free) chunk:
-
+	std::cout << "Deallocating block with " << mChunksPerBlock << " chunks." << std::endl;
+	reinterpret_cast<Chunk*>(ptr)->mNext = chunk;
 	chunk = reinterpret_cast<Chunk*>(ptr);
 }
 
-Chunk* memoryPool::allocateBlock(size_t chunkSize)
-{
-	std::cout << "\nAllocating block (" << mChunksPerBlock << " chunks):\n\n";
 
-	size_t blockSize = mChunksPerBlock * chunkSize;
-
-	// The first chunk of the new block.
-	Chunk* blockBegin = reinterpret_cast<Chunk*>(malloc(blockSize));
-
-	// Once the block is allocated, we need to chain all
-	// the chunks in this block:
-
-	Chunk* chunk = blockBegin;
-
-	for (int i = 0; i < mChunksPerBlock - 1; ++i) {
-		chunk->next =
-			reinterpret_cast<Chunk*>(reinterpret_cast<char*>(chunk) + chunkSize);
-		chunk = chunk->next;
-	}
-
-	chunk->next = nullptr;
-
-	return blockBegin;
-}
 
