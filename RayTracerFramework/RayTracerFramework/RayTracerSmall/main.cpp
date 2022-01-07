@@ -416,7 +416,7 @@ void SmoothScaling()
 		thread3.join();
 		thread4.join();
 
-		#elif defined __linux__
+		#elif defined __linux__/*
 		pid_t thread1 = vfork();
 		renderFrame(r, spheres);
 		pid_t thread2 = vfork();
@@ -424,7 +424,16 @@ void SmoothScaling()
 		pid_t thread3 = vfork();
 		renderFrame(r+50, spheres);
 		pid_t thread4 = vfork();
-		renderFrame(r+75, spheres);
+		renderFrame(r+75, spheres);*/
+		pthread_t thread1, thread2, thread3, thread4;
+		int iret1 pthread_create(&thread1, NULL, renderFrame, r, spheres);
+		int iret2 pthread_create(&thread2, NULL, renderFrame, r, spheres);
+		int iret3 pthread_create(&thread3, NULL, renderFrame, r, spheres);
+		int iret4 pthread_create(&thread4, NULL, renderFrame, r, spheres);
+		pthread_join(thread1, NULL);
+		pthread_join(thread2, NULL);
+		pthread_join(thread3, NULL);
+		pthread_join(thread4, NULL);
 		#endif
 	}
 }
