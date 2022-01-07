@@ -346,42 +346,16 @@ void SimpleShrinking(std::vector<Sphere> spheres)
 		default:
 			break;
 		}
-		//if (i == 0)
-		//{
-		//	spheres.push_back(Sphere(Vec3f(0.0, -10004, -20), 10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));
-		//	spheres.push_back(Sphere(Vec3f(0.0, 0, -20), 4, Vec3f(1.00, 0.32, 0.36), 1, 0.5)); // The radius paramter is the value we will change
-		//	spheres.push_back(Sphere(Vec3f(5.0, -1, -15), 2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));
-		//	spheres.push_back(Sphere(Vec3f(5.0, 0, -25), 3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));
-
-		//}
-		//else if (i == 1)
-		//{
-		//	spheres.push_back(Sphere(Vec3f(0.0, -10004, -20), 10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));
-		//	spheres.push_back(Sphere(Vec3f(0.0, 0, -20), 3, Vec3f(1.00, 0.32, 0.36), 1, 0.5)); // Radius--
-		//	spheres.push_back(Sphere(Vec3f(5.0, -1, -15), 2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));
-		//	spheres.push_back(Sphere(Vec3f(5.0, 0, -25), 3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));
-		//}
-		//else if (i == 2)
-		//{
-		//	spheres.push_back(Sphere(Vec3f(0.0, -10004, -20), 10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));
-		//	spheres.push_back(Sphere(Vec3f(0.0, 0, -20), 2, Vec3f(1.00, 0.32, 0.36), 1, 0.5)); // Radius--
-		//	spheres.push_back(Sphere(Vec3f(5.0, -1, -15), 2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));
-		//	spheres.push_back(Sphere(Vec3f(5.0, 0, -25), 3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));
-		//}
-		//else if (i == 3)
-		//{
-		//	spheres.push_back(Sphere(Vec3f(0.0, -10004, -20), 10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));
-		//	spheres.push_back(Sphere(Vec3f(0.0, 0, -20), 1, Vec3f(1.00, 0.32, 0.36), 1, 0.5)); // Radius--
-		//	spheres.push_back(Sphere(Vec3f(5.0, -1, -15), 2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));
-		//	spheres.push_back(Sphere(Vec3f(5.0, 0, -25), 3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));
-		//}
+		
 
 		render(spheres, i);
 		// Dont forget to clear the Vector holding the spheres.
 		spheres.clear();
 	}
 }
-void renderFrame(unsigned r, std::vector<Sphere> spheres) {
+#ifdef _WIN32
+void renderFrame(unsigned r) {
+	std::vector<Sphere> spheres;
 	spheres.push_back(Sphere(Vec3f(0.0, -10004, -20), 10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));
 	spheres.push_back(Sphere(Vec3f(0.0, 0, -20), r / 100, Vec3f(1.00, 0.32, 0.36), 1, 0.5)); // Radius++ change here
 	spheres.push_back(Sphere(Vec3f(5.0, -1, -15), 2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));
@@ -395,10 +369,26 @@ void renderFrame(unsigned r, std::vector<Sphere> spheres) {
 	// Dont forget to clear the Vector holding the spheres.
 	spheres.clear();
 }
+#elif defined __linux__
+void* renderFrameLinux(void* r) {
+	std::vector<Sphere> spheres;
+	int _r = *((int*)r);
+	spheres.push_back(Sphere(Vec3f(0.0, -10004, -20), 10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));
+	spheres.push_back(Sphere(Vec3f(0.0, 0, -20), _r / 100, Vec3f(1.00, 0.32, 0.36), 1, 0.5)); // Radius++ change here
+	spheres.push_back(Sphere(Vec3f(5.0, -1, -15), 2, Vec3f(0.90, 0.76, 0.46), 1, 0.0));
+	spheres.push_back(Sphere(Vec3f(5.0, 0, -25), 3, Vec3f(0.65, 0.77, 0.97), 1, 0.0));
+	render(spheres, _r);
+
+	std::cout << "Rendered and saved spheres" << _r << ".ppm" << std::endl;
+
+	// Dont forget to clear the Vector holding the spheres.
+	spheres.clear();
+}
+#endif
 
 void SmoothScaling()
 {
-	std::vector<Sphere> spheres;
+	
 	// Vector structure for Sphere (position, radius, surface color, reflectivity, transparency, emission color)
 
 
@@ -406,30 +396,22 @@ void SmoothScaling()
 	for (unsigned r = 25; r--;) // float to unsigned - optimised //for loop optimisation - optimised
 	{	
 		#ifdef _WIN32
-		std::thread thread1(renderFrame, r, spheres);
-		std::thread thread2(renderFrame, r + 25, spheres);
-		std::thread thread3(renderFrame, r + 50, spheres);
-		std::thread thread4(renderFrame, r + 75, spheres);
+		std::thread thread1(renderFrame, r);
+		std::thread thread2(renderFrame, r + 25);
+		std::thread thread3(renderFrame, r + 50);
+		std::thread thread4(renderFrame, r + 75);
 
 		thread1.join();
 		thread2.join();
 		thread3.join();
 		thread4.join();
 
-		#elif defined __linux__/*
-		pid_t thread1 = vfork();
-		renderFrame(r, spheres);
-		pid_t thread2 = vfork();
-		renderFrame(r+25, spheres);
-		pid_t thread3 = vfork();
-		renderFrame(r+50, spheres);
-		pid_t thread4 = vfork();
-		renderFrame(r+75, spheres);*/
+		#elif defined __linux__
 		pthread_t thread1, thread2, thread3, thread4;
-		int iret1 pthread_create(&thread1, NULL, renderFrame, r, spheres);
-		int iret2 pthread_create(&thread2, NULL, renderFrame, r, spheres);
-		int iret3 pthread_create(&thread3, NULL, renderFrame, r, spheres);
-		int iret4 pthread_create(&thread4, NULL, renderFrame, r, spheres);
+		int iret1 pthread_create(&thread1, NULL, renderFrameLinux, (void*)r);
+		int iret2 pthread_create(&thread2, NULL, renderFrameLinux, (void*)r);
+		int iret3 pthread_create(&thread3, NULL, renderFrameLinux, (void*)r);
+		int iret4 pthread_create(&thread4, NULL, renderFrameLinux, (void*)r);
 		pthread_join(thread1, NULL);
 		pthread_join(thread2, NULL);
 		pthread_join(thread3, NULL);
